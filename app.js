@@ -27,21 +27,21 @@ async function createDataset() {
 
   try {
     // Run the query as a job
-    const [job] = await bigqueryClient.createQueryJob(query);
+    const [job1] = await bigqueryClient.createQueryJob(query);
     const [job2] = await bigqueryClient.createQueryJob(query2);
 
     // Wait for the query to finish
-    const [rows] = await job.getQueryResults();
-    const [rows2] = await job2.getQueryResults();
+    const [topData] = await job1.getQueryResults();
+    const [risingData] = await job2.getQueryResults();
 
     const map = new Map();
-    rows.forEach((row) => {
-      map.set(row.term.toUpperCase(), false);
+    topData.forEach((trend) => {
+      map.set(trend.term.toUpperCase(), false);
     });
 
-    rows2.forEach((row) => {
-      if (map.has(row.term.toUpperCase())) {
-        map.set(row.term.toUpperCase(), true);
+    risingData.forEach((trend) => {
+      if (map.has(trend.term.toUpperCase())) {
+        map.set(trend.term.toUpperCase(), true);
       }
     });
 
@@ -55,7 +55,7 @@ createDataset().then((map) => {
   app.get('', (req, res) => {
     res.render('index', { map });
   });
-  app.listen(port, () => console.info(`App listening on port ${port}`));
+  app.listen(port);
 });
 
 // Imports
@@ -65,13 +65,8 @@ const port = 3000;
 
 // Static Files
 app.use(express.static('public'));
-// Specific folder example
-app.use('/css', express.static(__dirname + 'public/css'));
 app.use('/js', express.static(__dirname + 'public/js'));
-app.use('/img', express.static(__dirname + 'public/images'));
 
 // Set View's
 app.set('views', './views');
 app.set('view engine', 'ejs');
-
-// Navigation
