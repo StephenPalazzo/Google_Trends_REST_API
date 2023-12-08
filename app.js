@@ -2,15 +2,9 @@
 const { BigQuery } = require('@google-cloud/bigquery');
 
 async function createDataset() {
-  // Load dotenv configuration
-  require('dotenv').config();
-
-  // Get environment variables
-  const GOOGLE_CLOUD_PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT_ID;
-  const GOOGLE_CLOUD_API_KEY = process.env.GOOGLE_CLOUD_API_KEY;
 
   // Creates a client
-  const bigqueryClient = new BigQuery({GOOGLE_CLOUD_PROJECT_ID, GOOGLE_CLOUD_API_KEY});
+  const bigqueryClient = new BigQuery();
 
   const query = `SELECT term, ARRAY_AGG(STRUCT(rank, week) ORDER BY week DESC LIMIT 1) x
         FROM \`bigquery-public-data.google_trends.top_terms\`
