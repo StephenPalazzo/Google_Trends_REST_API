@@ -1,6 +1,6 @@
 # REST_API
 
-![Project Image](public/img/REST_API.jpeg)
+![Project Image](public/img/GoogleTrends.PNG)
 
 ---
 
